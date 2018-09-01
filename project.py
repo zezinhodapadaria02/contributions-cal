@@ -6,9 +6,20 @@ from urllib.parse import unquote, parse_qs
 import os
 import threading
 from socketserver import ThreadingMixIn
+import pygit2
+import os
+from time import gmtime, strftime
 
 my_user = 'uninitialized'
 my_password = 'uninitialized'
+
+repository_url = "https://github.com/flauberjp/MovieTrailerWebsite"
+local_repository_name = repository_url.rsplit('/', 1)[-1]
+file_of_evidences = local_repository_name + '/index.html'
+
+repository = ''
+if (os.path.exists(local_repository_name) == False):
+    repository = pygit2.clone_repository(repository_url, local_repository_name)
 
 memory = {}
 
