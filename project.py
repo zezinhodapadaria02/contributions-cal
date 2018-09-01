@@ -7,6 +7,9 @@ import os
 import threading
 from socketserver import ThreadingMixIn
 
+my_user = 'uninitialized'
+my_password = 'uninitialized'
+
 memory = {}
 
 form = '''<!DOCTYPE html>
@@ -76,6 +79,8 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             # List the known associations in the form.
             known = "\n".join("{} : {}".format(key, memory[key])
                               for key in sorted(memory.keys()))
+            known += 'variables'
+            known += 'user: ' + my_user + '; pwd: ' + my_password
             self.wfile.write(form.format(known).encode())
 
     def do_POST(self):
@@ -118,6 +123,8 @@ class Shortener(http.server.BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8001))   # Use PORT if it's there.
+    my_user = os.environ.get('my_user', 'undefined')
+    my_password = os.environ.get('my_password', 'undefined')
     server_address = ('', port)
     httpd = ThreadHTTPServer(server_address, Shortener)
     httpd.serve_forever()
