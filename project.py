@@ -11,10 +11,10 @@ import os
 from time import gmtime, strftime
 
 import subprocess
-result = subprocess.run(['ls', '-l'], stdout=subprocess.PIPE)
+result = subprocess.run(['gcc', '--version'], stdout=subprocess.PIPE)
 
 
-my_user = result.stdout
+my_user = 'uninitialized'
 my_password = 'uninitialized'
 
 #repository_url = "https://github.com/flauberjp/MovieTrailerWebsite"
@@ -94,8 +94,9 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             # List the known associations in the form.
             known = "\n".join("{} : {}".format(key, memory[key])
                               for key in sorted(memory.keys()))
-            known += 'variables'
-            known += 'user: ' + my_user + '; pwd: ' + my_password
+            known += 'variables:<BR>'
+            #known += 'user: ' + my_user + '; pwd: ' + my_password
+            known += result.stdout
             self.wfile.write(form.format(known).encode())
 
     def do_POST(self):
