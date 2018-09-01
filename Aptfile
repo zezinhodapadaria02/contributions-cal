@@ -1,1 +1,1 @@
-libgit2-glib-1.0-0
+python-dev libffi-dev libssl-dev libxml2-dev libxslt1-dev libssh2-1 libgit2-dev python-pip libgit2-24
