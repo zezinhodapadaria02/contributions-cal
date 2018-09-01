@@ -10,10 +10,6 @@ from socketserver import ThreadingMixIn
 import os
 from time import gmtime, strftime
 
-import subprocess
-result = subprocess.run(['gcc', '--version'], stdout=subprocess.PIPE)
-
-
 my_user = 'uninitialized'
 my_password = 'uninitialized'
 
@@ -94,9 +90,8 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             # List the known associations in the form.
             known = "\n".join("{} : {}".format(key, memory[key])
                               for key in sorted(memory.keys()))
-            known += 'variables:<BR>'
-            #known += 'user: ' + my_user + '; pwd: ' + my_password
-            known += result.stdout
+            known += 'variables: <BR>'
+            known += 'user: ' + my_user + '; pwd: ' + my_password
             self.wfile.write(form.format(known).encode())
 
     def do_POST(self):
