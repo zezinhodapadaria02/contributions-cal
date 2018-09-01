@@ -17,9 +17,9 @@ my_password = 'uninitialized'
 #local_repository_name = repository_url.rsplit('/', 1)[-1]
 #file_of_evidences = local_repository_name + '/index.html'
 
-repository = ''
-if (os.path.exists(local_repository_name) == False):
-    repository = pygit2.clone_repository(repository_url, local_repository_name)
+#repository = ''
+#if (os.path.exists(local_repository_name) == False):
+#    repository = pygit2.clone_repository(repository_url, local_repository_name)
 
 memory = {}
 
