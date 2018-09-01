@@ -10,7 +10,11 @@ from socketserver import ThreadingMixIn
 import os
 from time import gmtime, strftime
 
-my_user = 'uninitialized'
+import subprocess
+result = subprocess.run(['ls', '-l'], stdout=subprocess.PIPE)
+
+
+my_user = result.stdout
 my_password = 'uninitialized'
 
 #repository_url = "https://github.com/flauberjp/MovieTrailerWebsite"
