@@ -1,2 +1,2 @@
 requests>=2.12
-pygit2>=2.18
+pygit2>=2
