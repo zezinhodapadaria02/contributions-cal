@@ -1,11 +1,2 @@
-libssl-dev
-libssh2-1-dev
-libffi-dev
-zlib1g-dev
-python-cffi 
-build-essential
-pkg-config
-git
-libhttp-parser-dev
-python-setuptools
+git-core
 http://debian.mirror.ac.za/debian/pool/main/libg/libgit2/libgit2-27_0.27.4+dfsg.1-0.1_amd64.deb
