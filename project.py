@@ -31,13 +31,11 @@ main_page_content = '''
 my_user = os.environ.get('my_user', 'undefined')
 my_password = os.environ.get('my_password', 'undefined')
 
-args = ['git', 'config', '--global', 'user.name', my_user]
-res = subprocess.Popen(args, stdout=subprocess.PIPE)
-output, _error = res.communicate()
+print(subprocess.check_output('git config --global user.name' + my_user, 
+    shell=True).decode())
 
-args = ['git', 'config', '--global', 'user.password', my_password]
-res = subprocess.Popen(args, stdout=subprocess.PIPE)
-output, _error = res.communicate()
+print(subprocess.check_output('git config --global user.password' + my_password, 
+    shell=True).decode())
 
 print("user: " + my_user + "; password: " + '*****' if True else my_password)
 
