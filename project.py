@@ -47,7 +47,10 @@ shell=True).decode())
 subprocess.check_output('git config --global user.password \"' + my_password + '\"', 
     shell=True).decode()
 
-print(subprocess.check_output('git config --global user.password \"' + my_password + '\"', 
+print(subprocess.check_output('git config --global user.password', 
+    shell=True).decode())
+
+print(subprocess.check_output('git config --global --list', 
     shell=True).decode())
 
 print("user: " + my_user + "; password: " + '*****' if True else my_password)
