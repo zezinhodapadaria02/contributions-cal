@@ -67,7 +67,7 @@ if (os.path.exists(local_repository_name) == False):
 nextCurrentDirectory = initialWorkingDirectory + '/' +  local_repository_name
 if os.name == 'nt':
     nextCurrentDirectory = os.getcwd() + local_repository_name.replace('/', '\\') 
-print('Changing current directory from ' + cwd + ' to ' + nextCurrentDirectory)
+print('Changing current directory from ' + initialWorkingDirectory + ' to ' + nextCurrentDirectory)
 os.chdir(nextCurrentDirectory)
 print('Working directory: ')
 cwd = os.getcwd()
