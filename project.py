@@ -24,8 +24,10 @@ print('Working directory: ')
 cwd = os.getcwd()
 print(cwd)
 
-print('git --version')
-print(subprocess.check_output('git --version', 
+print('\n' + subprocess.check_output('git --version', 
+        shell=True).decode())
+
+print('\n' + subprocess.check_output('export GIT_DISCOVERY_ACROSS_FILESYSTEM=1', 
         shell=True).decode())
 
 main_page_content = '''
