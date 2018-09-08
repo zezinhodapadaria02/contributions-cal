@@ -29,10 +29,14 @@ main_page_content = '''
 '''
 
 my_user = os.environ.get('my_user', 'undefined')
+my_email = os.environ.get('my_email', 'undefined')
 my_password = os.environ.get('my_password', 'undefined')
 
 print(subprocess.check_output('git config --global user.name ' + my_user, 
     shell=True).decode())
+
+print(subprocess.check_output('git config --global user.email ' + my_user, 
+shell=True).decode())
 
 print(subprocess.check_output('git config --global user.password ' + my_password, 
     shell=True).decode())
