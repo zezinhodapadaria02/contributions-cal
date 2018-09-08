@@ -35,20 +35,11 @@ my_password = os.environ.get('my_password', 'undefined')
 subprocess.check_output('git config --global user.name \"' + my_user + '\"', 
     shell=True)
 
-print(subprocess.check_output('git config --global user.name', 
-    shell=True).decode())
-
 subprocess.check_output('git config --global user.email \"' + my_email + '\"', 
 shell=True).decode()
 
-print(subprocess.check_output('git config --global user.email', 
-shell=True).decode())
-
 subprocess.check_output('git config --global user.password \"' + my_password + '\"', 
     shell=True).decode()
-
-print(subprocess.check_output('git config --global user.password', 
-    shell=True).decode())
 
 print(subprocess.check_output('git config --global --list', 
     shell=True).decode())
