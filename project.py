@@ -22,9 +22,6 @@ except ImportError as e:
 print('Working directory: ')
 cwd = os.getcwd()
 print(cwd)
-paths = DisplayablePath.make_tree(Path(cwd))
-for path in paths:
-    print(path.displayable())
 
 print('\n' + subprocess.check_output('git --version', 
         shell=True).decode())
