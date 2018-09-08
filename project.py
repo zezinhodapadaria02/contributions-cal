@@ -64,7 +64,7 @@ if (os.path.exists(local_repository_name) == False):
     print(subprocess.check_output('git clone ' + repository_url, 
         shell=True).decode())
 
-nextCurrentDirectory = cwd + '/' +  local_repository_name
+nextCurrentDirectory = initialWorkingDirectory + '/' +  local_repository_name
 if os.name == 'nt':
     nextCurrentDirectory = os.getcwd() + local_repository_name.replace('/', '\\') 
 print('Changing current directory from ' + cwd + ' to ' + nextCurrentDirectory)
