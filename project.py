@@ -52,7 +52,7 @@ print(subprocess.check_output('git config --global --list',
 
 repository_url = 'https://github.com/flauberjp/MovieTrailerWebsite'
 local_repository_name = repository_url.rsplit('/', 1)[-1]
-file_of_evidences = local_repository_name + '/index2.html'
+file_of_evidences = 'index2.html'
 
 if (os.path.exists(local_repository_name) == False):
     print(subprocess.check_output('git clone ' + repository_url, 
@@ -60,8 +60,7 @@ if (os.path.exists(local_repository_name) == False):
 
 nextCurrentDirectory = cwd + '/' +  local_repository_name
 if os.name == 'nt':
-    nextCurrentDirectory = os.getcwd() + file_of_evidences.replace('/', '\\') 
-
+    nextCurrentDirectory = os.getcwd() + local_repository_name.replace('/', '\\') 
 print('Changing current directory from ' + cwd + ' to ' + nextCurrentDirectory)
 os.chdir(nextCurrentDirectory)
 print('Working directory: ')
@@ -69,8 +68,7 @@ cwd = os.getcwd()
 print(cwd)
 
 print('git remote -v')
-
-subprocess.check_output('git remote -v', shell=True).decode()    
+print(subprocess.check_output('git remote -v', shell=True).decode())    
 
 print('Checking existence of \"' + file_of_evidences + '\"...')
 
@@ -81,12 +79,12 @@ if(os.path.exists(file_of_evidences) == False):
 else:
     print('FILE EXIST')
 
-file_of_evidences = '/' +  file_of_evidences
+file_of_evidences_fullPath = '/' +  file_of_evidences
 if os.name == 'nt':
-    file_of_evidences = os.getcwd() + file_of_evidences.replace('/', '\\') 
+    file_of_evidences_fullPath = os.getcwd() + file_of_evidences_fullPath.replace('/', '\\') 
 else: 
-    file_of_evidences = os.getcwd() + file_of_evidences 
-print('Full path: \"' + file_of_evidences + '\"...')
+    file_of_evidences_fullPath = os.getcwd() + file_of_evidences_fullPath 
+print('Full path: \"' + file_of_evidences_fullPath + '\"...')
 
 class ThreadHTTPServer(ThreadingMixIn, http.server.HTTPServer):
     "This is an HTTPServer that supports thread-based concurrency."
@@ -108,7 +106,7 @@ class Shortener(http.server.BaseHTTPRequestHandler):
                 if(lastPartOfThePath != 'request'):
                     commit_message += ' ' + lastPartOfThePath
 
-                with open(file_of_evidences, 'r+') as f:
+                with open(file_of_evidences_fullPath, 'r+') as f:
                     content = f.read()
                     f.seek(0, 0)
                     f.write(commit_message + '<BR>' + content)
@@ -120,7 +118,7 @@ class Shortener(http.server.BaseHTTPRequestHandler):
                 origin = repo.remotes.origin
                 origin.push()
 
-        fileName = file_of_evidences
+        fileName = file_of_evidences_fullPath
         if (self.path.endswith('.html')):
             if os.name == 'nt':
                 fileNameTemp = os.getcwd() + self.path.replace('/', '\\') 
