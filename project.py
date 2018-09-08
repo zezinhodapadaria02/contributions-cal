@@ -19,10 +19,19 @@ except ImportError as e:
     have_git = False
     GIT_MISSING = 'Requires gitpython module, but not installed or incompatible version: %s' % e
 
+def list_files(startpath):
+    for root, dirs, files in os.walk(startpath):
+        level = root.replace(startpath, '').count(os.sep)
+        indent = ' ' * 4 * (level)
+        print('{}{}/'.format(indent, os.path.basename(root)))
+        subindent = ' ' * 4 * (level + 1)
+        for f in files:
+            print('{}{}'.format(subindent, f))
 
 print('Working directory: ')
 cwd = os.getcwd()
 print(cwd)
+list_files(cwd)
 
 print('\n' + subprocess.check_output('git --version', 
         shell=True).decode())
@@ -53,8 +62,6 @@ subprocess.check_output('git config --global user.password \"' + my_password + '
 
 print(subprocess.check_output('git config --global --list', 
     shell=True).decode())
-
-print("user: " + my_user + "; password: " + '*****' if True else my_password)
 
 repository_url = 'https://github.com/flauberjp/MovieTrailerWebsite'
 local_repository_name = repository_url.rsplit('/', 1)[-1]
