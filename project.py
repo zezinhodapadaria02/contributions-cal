@@ -50,8 +50,8 @@ print(
     'my_user: ' + my_password + '\n')
 
 
-print('git config — global credential.helper')
-print('\n' + subprocess.check_output('git config — global credential.helper', 
+print('git config --global credential.helper cache')
+print('\n' + subprocess.check_output('git config --global credential.helper cache', 
         shell=True).decode())
 
 print('printf \'protocol=https\\nhost=github.com\\nusername=' + my_user + '\\npassword=' + my_password + '\\n\' | git credential approve')
