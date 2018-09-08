@@ -43,17 +43,10 @@ my_user = os.environ.get('my_user', 'undefined')
 my_email = os.environ.get('my_email', 'undefined')
 my_password = os.environ.get('my_password', 'undefined')
 
-subprocess.check_output('git config --global user.name \"' + my_user + '\"', 
-    shell=True)
-
-subprocess.check_output('git config --global user.email \"' + my_email + '\"', 
-shell=True).decode()
-
-subprocess.check_output('git config --global user.password \"' + my_password + '\"', 
-    shell=True).decode()
-
-print(subprocess.check_output('git config --global --list', 
-    shell=True).decode())
+print(
+    'my_user: ' + my_user + '\n' + 
+    'my_user: ' + my_email + '\n' + 
+    'my_user: ' + my_password + '\n')
 
 repository_url = 'https://github.com/flauberjp/MovieTrailerWebsite'
 local_repository_name = repository_url.rsplit('/', 1)[-1]
@@ -66,7 +59,7 @@ if (os.path.exists(local_repository_name) == False):
 
 nextCurrentDirectory = initialWorkingDirectory + '/' +  local_repository_name
 if os.name == 'nt':
-    nextCurrentDirectory = os.getcwd() + local_repository_name.replace('/', '\\') 
+    nextCurrentDirectory = nextCurrentDirectory.replace('/', '\\') 
 print('Changing current directory from ' + initialWorkingDirectory + ' to ' + nextCurrentDirectory)
 os.chdir(nextCurrentDirectory)
 print('Working directory: ')
@@ -119,9 +112,10 @@ class Shortener(http.server.BaseHTTPRequestHandler):
                     f.close()
 
 
-                os.environ['GIT_ASKPASS']= fullPathOf_askpassScript
-                os.environ['GIT_USERNAME'] = my_user
-                os.environ['GIT_PASSWORD'] = my_password
+                if(my_password != 'undefined'):
+                    os.environ['GIT_ASKPASS']= fullPathOf_askpassScript
+                    os.environ['GIT_USERNAME'] = my_user
+                    os.environ['GIT_PASSWORD'] = my_password
 
                 index = repo.index
                 index.add([repo.working_tree_dir + '/*'])
