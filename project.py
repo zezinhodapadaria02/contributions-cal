@@ -41,8 +41,12 @@ print('git help -a')
 print('\n' + subprocess.check_output('git help -a', 
         shell=True).decode())
 
+print('files on Working directory: ')
+file_list=os.listdir(initialWorkingDirectory)
+print (file_list)
 
-fullPathOf_askpassScript = 'python ' + initialWorkingDirectory + '/project.py'
+
+fullPathOf_askpassScript = 'python ' + initialWorkingDirectory + '/askpass.py'
 if os.name == 'nt':
     fullPathOf_askpassScript = fullPathOf_askpassScript.replace('/', '\\') 
 
