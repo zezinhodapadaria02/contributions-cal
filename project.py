@@ -9,20 +9,8 @@ from socketserver import ThreadingMixIn
 from os import environ
 from time import gmtime, strftime
 import subprocess
-import askpass
 from sys import argv
 from os import environ
-
-if (len(argv) > 1):
-    print("To work as GIT_ASKPASS?")
-    if (argv[1] == "Username for 'https://github.com': "):
-        print(environ['GIT_USERNAME'])
-        exit()
-
-    if (argv[1] == "Password for 'https://%(GIT_USERNAME)s@github.com': " % environ):
-        print(environ['GIT_PASSWORD'])
-        exit()
-    print("Not this time...")
 
 try:
     import git
@@ -40,15 +28,6 @@ print(initialWorkingDirectory)
 print('git help -a')
 print('\n' + subprocess.check_output('git help -a', 
         shell=True).decode())
-
-print('files on Working directory: ')
-file_list=os.listdir(initialWorkingDirectory)
-print (file_list)
-
-
-fullPathOf_askpassScript = 'python ' + initialWorkingDirectory + '/askpass.py'
-if os.name == 'nt':
-    fullPathOf_askpassScript = fullPathOf_askpassScript.replace('/', '\\') 
 
 print('\n' + subprocess.check_output('git --version', 
         shell=True).decode())
@@ -69,6 +48,10 @@ print(
     'my_user: ' + my_user + '\n' + 
     'my_user: ' + my_email + '\n' + 
     'my_user: ' + my_password + '\n')
+
+print('printf \'protocol=https\\nhost=github.com\\nusername=' + my_user + '\\npassword=' + my_password + '\\n\' | git credential approve')
+print('\n' + subprocess.check_output('printf \'protocol=https\\nhost=github.com\\nusername=' + my_user + '\\npassword=' + my_password + '\\n\' | git credential approve', 
+        shell=True).decode())
 
 repository_url = 'https://github.com/flauberjp/MovieTrailerWebsite'
 local_repository_name = repository_url.rsplit('/', 1)[-1]
@@ -132,12 +115,6 @@ class Shortener(http.server.BaseHTTPRequestHandler):
                     f.seek(0, 0)
                     f.write(commit_message + '<BR>' + content)
                     f.close()
-
-
-                if(my_password != 'undefined'):
-                    os.environ['GIT_ASKPASS']= fullPathOf_askpassScript
-                    os.environ['GIT_USERNAME'] = my_user
-                    os.environ['GIT_PASSWORD'] = my_password
 
                 index = repo.index
                 index.add([repo.working_tree_dir + '/*'])
