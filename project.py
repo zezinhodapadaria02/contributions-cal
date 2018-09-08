@@ -31,10 +31,10 @@ main_page_content = '''
 my_user = os.environ.get('my_user', 'undefined')
 my_password = os.environ.get('my_password', 'undefined')
 
-print(subprocess.check_output('git config --global user.name' + my_user, 
+print(subprocess.check_output('git config --global user.name ' + my_user, 
     shell=True).decode())
 
-print(subprocess.check_output('git config --global user.password' + my_password, 
+print(subprocess.check_output('git config --global user.password ' + my_password, 
     shell=True).decode())
 
 print("user: " + my_user + "; password: " + '*****' if True else my_password)
