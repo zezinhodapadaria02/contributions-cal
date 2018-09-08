@@ -38,8 +38,14 @@ subprocess.check_output('git config --global user.name \"' + my_user + '\"',
 print(subprocess.check_output('git config --global user.name', 
     shell=True).decode())
 
-print(subprocess.check_output('git config --global user.email \"' + my_email + '\"', 
+subprocess.check_output('git config --global user.email \"' + my_email + '\"', 
+shell=True).decode()
+
+print(subprocess.check_output('git config --global user.email', 
 shell=True).decode())
+
+subprocess.check_output('git config --global user.password \"' + my_password + '\"', 
+    shell=True).decode()
 
 print(subprocess.check_output('git config --global user.password \"' + my_password + '\"', 
     shell=True).decode())
