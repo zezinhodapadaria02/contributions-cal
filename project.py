@@ -14,39 +14,56 @@ import subprocess
 my_user = 'uninitialized'
 my_password = 'uninitialized'
 
-repository_url = 'https://github.com/flauberjp/MovieTrailerWebsite'
-local_repository_name = repository_url.rsplit('/', 1)[-1]
-file_of_evidences = local_repository_name + '/index2.html'
-
-#if (os.path.exists(local_repository_name) == False):
-#    pygit2.clone_repository(repository_url, local_repository_name)
-
-#if(os.path.exists(file_of_evidences) == False):
-#    with open(file_of_evidences, 'w'): 
-#        pass
-
-message = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-#with open(file_of_evidences, 'r+') as f:
-#        content = f.read()
-#        f.seek(0, 0)
-#        f.write(message + '<BR>' + content)
-
-args = ['git', 'clone', repository_url]
-res = subprocess.Popen(args, stdout=subprocess.PIPE)
-output, _error = res.communicate()
-
-if not _error:
-    message = 'ERROR: ' + output.decode("utf-8") 
-else:
-    message = 'SUCCESS: ' + _error.decode("utf-8")
-print(message) 
-
-
 class ThreadHTTPServer(ThreadingMixIn, http.server.HTTPServer):
     "This is an HTTPServer that supports thread-based concurrency."
 
 class Shortener(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
+        if self.path.endswith('.html'):
+            fileName = os.getcwd() + self.path.replace('/', '\\')  
+            print(fileName)
+            if (os.path.exists(fileName) == False):
+                print('file not exist')
+            else:
+                print('file exist')
+            
+            f = open(fileName, 'rb') #open requested file  
+    
+            #send code 200 response  
+            self.send_response(200)  
+    
+            #send header first  
+            self.send_header('Content-type','text-html')  
+            self.end_headers()  
+    
+            #send file content to client  
+            self.wfile.write(f.read())  
+            f.close()  
+            return  
+
+        repository_url = 'https://github.com/flauberjp/MovieTrailerWebsite'
+        local_repository_name = repository_url.rsplit('/', 1)[-1]
+        file_of_evidences = local_repository_name + '/index2.html'
+
+        if (os.path.exists(local_repository_name) == False):
+            args = ['git', 'clone', repository_url]
+            res = subprocess.Popen(args, stdout=subprocess.PIPE)
+            output, _error = res.communicate()
+
+        if(os.path.exists(file_of_evidences) == False):
+            message = 'FILE DOES NOT EXIST' 
+            with open(file_of_evidences, 'w'): 
+                pass
+        else:
+            message = 'FILE EXIST' 
+        print(message) 
+
+        message = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+        with open(file_of_evidences, 'r+') as f:
+                content = f.read()
+                f.seek(0, 0)
+                f.write(message + '<BR>' + content)
+
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
