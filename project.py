@@ -19,6 +19,9 @@ except ImportError as e:
     have_git = False
     GIT_MISSING = 'Requires gitpython module, but not installed or incompatible version: %s' % e
 
+print('git --version')
+print(subprocess.check_output('git --version', 
+        shell=True).decode())
 
 main_page_content = '''
 <html>  
