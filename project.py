@@ -96,7 +96,7 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             if not have_git:
                 print(GIT_MISSING)
             else:
-                repo = git.Repo(local_repository_name) 
+                repo = git.Repo(".") 
                 print("Location "+ repo.working_tree_dir)
                 print("Remote: " + repo.remote("origin").url)
 
