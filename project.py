@@ -19,41 +19,6 @@ except ImportError as e:
     have_git = False
     GIT_MISSING = 'Requires gitpython module, but not installed or incompatible version: %s' % e
 
-from pathlib import Path
-
-class DisplayablePath(object):
-    display_filename_prefix_middle = '├──'
-    display_filename_prefix_last = '└──'
-    display_parent_prefix_middle = '    '
-    display_parent_prefix_last = '│   '
-
-    def __init__(self, path, parent_path, is_last):
-        self.path = Path(str(path))
-        self.parent = parent_path
-        self.is_last = is_last
-        if self.parent:
-            self.depth = self.parent.depth + 1
-        else:
-            self.depth = 0
-
-    @property
-    def displayname(self):
-        if self.path.is_dir():
-            return self.path.name + '/'
-        return self.path.name
-
-    @classmethod
-    def make_tree(cls, root, parent=None, is_last=False, criteria=None):
-        root = Path(str(root))
-        criteria = criteria or cls._default_criteria
-
-        displayable_root = cls(root, parent, is_last)
-        yield displayable_root
-
-        children = sorted(list(path
-                               for path in root.iterdir()
-                               if criteria(path)),
-
 print('Working directory: ')
 cwd = os.getcwd()
 print(cwd)
