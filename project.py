@@ -28,8 +28,18 @@ main_page_content = '''
 </html>
 '''
 
-my_user = 'uninitialized'
-my_password = 'uninitialized'
+my_user = os.environ.get('my_user', 'undefined')
+my_password = os.environ.get('my_password', 'undefined')
+
+args = ['git', 'config', '--global', 'user.name', my_user]
+res = subprocess.Popen(args, stdout=subprocess.PIPE)
+output, _error = res.communicate()
+
+args = ['git', 'config', '--global', 'user.password', my_password]
+res = subprocess.Popen(args, stdout=subprocess.PIPE)
+output, _error = res.communicate()
+
+print("user: " + my_user + "; password: " + '*****' if True else my_password)
 
 repository_url = 'https://github.com/flauberjp/MovieTrailerWebsite'
 local_repository_name = repository_url.rsplit('/', 1)[-1]
@@ -120,8 +130,6 @@ class Shortener(http.server.BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8001))   # Use PORT if it's there.
-    my_user = os.environ.get('my_user', 'undefined')
-    my_password = os.environ.get('my_password', 'undefined')
     server_address = ('', port)
     httpd = ThreadHTTPServer(server_address, Shortener)
     httpd.serve_forever()
