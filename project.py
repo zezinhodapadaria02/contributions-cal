@@ -7,7 +7,9 @@ import os
 import threading
 from socketserver import ThreadingMixIn
 import os
+import git
 from time import gmtime, strftime
+import subprocess
 
 my_user = 'uninitialized'
 my_password = 'uninitialized'
@@ -29,6 +31,17 @@ message = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 #        f.seek(0, 0)
 #        f.write(message + '<BR>' + content)
 
+args = ['git', 'clone', repository_url]
+res = subprocess.Popen(args, stdout=subprocess.PIPE)
+output, _error = res.communicate()
+
+if not _error:
+    message = 'ERROR: ' + output.decode("utf-8") 
+else:
+    message = 'SUCCESS: ' + _error.decode("utf-8")
+print(message) 
+
+
 class ThreadHTTPServer(ThreadingMixIn, http.server.HTTPServer):
     "This is an HTTPServer that supports thread-based concurrency."
 
@@ -38,7 +51,8 @@ class Shortener(http.server.BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/html')
         self.end_headers()
         known = 'variables: <BR>'
-        known += 'user: ' + my_user + '; pwd: ' + my_password
+        known += 'user: ' + my_user + '; pwd: ' + my_password + '<BR>'
+        known += 'git command result: ' + message
         self.wfile.write(known.encode())
 
 
