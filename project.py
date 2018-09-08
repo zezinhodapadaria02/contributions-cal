@@ -58,6 +58,10 @@ if (os.path.exists(local_repository_name) == False):
     res = subprocess.Popen(args, stdout=subprocess.PIPE)
     output, _error = res.communicate()
 
+
+print(subprocess.check_output('git remote -v', 
+    shell=True).decode())
+
 print('Checking existence of \"' + file_of_evidences + '\"...')
 
 if(os.path.exists(file_of_evidences) == False):
