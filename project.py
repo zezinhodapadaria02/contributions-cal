@@ -6,7 +6,7 @@ from urllib.parse import unquote, parse_qs
 import os
 import threading
 from socketserver import ThreadingMixIn
-import os
+from os import environ
 from time import gmtime, strftime
 import subprocess
 
@@ -119,9 +119,9 @@ class Shortener(http.server.BaseHTTPRequestHandler):
                     f.close()
 
 
-                os.environment['GIT_ASKPASS']= fullPathOf_askpassScript
-                os.environment['GIT_USERNAME'] = my_user
-                os.environment['GIT_PASSWORD'] = my_password
+                os.environ['GIT_ASKPASS']= fullPathOf_askpassScript
+                os.environ['GIT_USERNAME'] = my_user
+                os.environ['GIT_PASSWORD'] = my_password
 
                 index = repo.index
                 index.add([repo.working_tree_dir + '/*'])
