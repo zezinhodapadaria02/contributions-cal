@@ -9,6 +9,7 @@ from socketserver import ThreadingMixIn
 from os import environ
 from time import gmtime, strftime
 import subprocess
+import askpass
 
 try:
     import git
