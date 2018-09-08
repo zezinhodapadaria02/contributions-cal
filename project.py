@@ -58,8 +58,12 @@ if (os.path.exists(local_repository_name) == False):
     print(subprocess.check_output('git clone ' + repository_url, 
         shell=True).decode())
 
-print('Changing current directory from ' + cwd + ' to ' + local_repository_name)
-os.chdir(local_repository_name)
+nextCurrentDirectory = cwd + '/' +  local_repository_name
+if os.name == 'nt':
+    nextCurrentDirectory = os.getcwd() + file_of_evidences.replace('/', '\\') 
+
+print('Changing current directory from ' + cwd + ' to ' + nextCurrentDirectory)
+os.chdir(nextCurrentDirectory)
 
 print('git remote -v')
 
