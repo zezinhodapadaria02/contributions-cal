@@ -55,11 +55,11 @@ local_repository_name = repository_url.rsplit('/', 1)[-1]
 file_of_evidences = local_repository_name + '/index2.html'
 
 if (os.path.exists(local_repository_name) == False):
-    newRepo = git.Repo.init(local_repository_name, mkdir=True)
-    args = ['git', 'clone', repository_url]
-    res = subprocess.Popen(args, stdout=subprocess.PIPE)
-    output, _error = res.communicate()
+    print(subprocess.check_output('git clone ' + repository_url, 
+        shell=True).decode())
 
+print('Changing current directory from ' + cwd + ' to ' + local_repository_name)
+os.chdir(local_repository_name)
 
 print('git remote -v')
 
