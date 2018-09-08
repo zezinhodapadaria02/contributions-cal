@@ -21,8 +21,8 @@ except ImportError as e:
 
 
 print('Working directory: ')
-print(subprocess.check_output('os.getcwd()', 
-        shell=True).decode())
+cwd = os.getcwd()
+print(cwd)
 
 print('git --version')
 print(subprocess.check_output('git --version', 
