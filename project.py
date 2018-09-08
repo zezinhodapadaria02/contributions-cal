@@ -32,7 +32,10 @@ my_user = os.environ.get('my_user', 'undefined')
 my_email = os.environ.get('my_email', 'undefined')
 my_password = os.environ.get('my_password', 'undefined')
 
-print(subprocess.check_output('git config --global user.name \"' + my_user + '\"', 
+subprocess.check_output('git config --global user.name \"' + my_user + '\"', 
+    shell=True)
+
+print(subprocess.check_output('git config --global user.name', 
     shell=True).decode())
 
 print(subprocess.check_output('git config --global user.email \"' + my_email + '\"', 
