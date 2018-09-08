@@ -55,6 +55,7 @@ local_repository_name = repository_url.rsplit('/', 1)[-1]
 file_of_evidences = 'index2.html'
 
 if (os.path.exists(local_repository_name) == False):
+    print('git clone ' + repository_url)
     print(subprocess.check_output('git clone ' + repository_url, 
         shell=True).decode())
 
