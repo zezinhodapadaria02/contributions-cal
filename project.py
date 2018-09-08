@@ -19,9 +19,14 @@ except ImportError as e:
     have_git = False
     GIT_MISSING = 'Requires gitpython module, but not installed or incompatible version: %s' % e
 
-print('Working directory: ')
-cwd = os.getcwd()
-print(cwd)
+print('Working directory (initial): ')
+initialWorkingDirectory = os.getcwd()
+print(initialWorkingDirectory)
+
+
+fullPathOf_askpassScript = initialWorkingDirectory + '/askpass.py'
+if os.name == 'nt':
+    fullPathOf_askpassScript = fullPathOf_askpassScript.replace('/', '\\') 
 
 print('\n' + subprocess.check_output('git --version', 
         shell=True).decode())
@@ -112,6 +117,11 @@ class Shortener(http.server.BaseHTTPRequestHandler):
                     f.seek(0, 0)
                     f.write(commit_message + '<BR>' + content)
                     f.close()
+
+
+                os.environment['GIT_ASKPASS']= fullPathOf_askpassScript
+                os.environment['GIT_USERNAME'] = my_user
+                os.environment['GIT_PASSWORD'] = my_password
 
                 index = repo.index
                 index.add([repo.working_tree_dir + '/*'])
