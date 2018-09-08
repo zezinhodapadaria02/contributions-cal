@@ -37,6 +37,10 @@ print('Working directory (initial): ')
 initialWorkingDirectory = os.getcwd()
 print(initialWorkingDirectory)
 
+print('git help -a')
+print('\n' + subprocess.check_output('git help -a', 
+        shell=True).decode())
+
 
 fullPathOf_askpassScript = initialWorkingDirectory + '/project.py'
 if os.name == 'nt':
