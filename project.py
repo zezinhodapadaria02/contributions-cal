@@ -20,7 +20,10 @@ class ThreadHTTPServer(ThreadingMixIn, http.server.HTTPServer):
 class Shortener(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path.endswith('.html'):
-            fileName = os.getcwd() + self.path.replace('/', '\\')  
+            if os.name == 'nt':
+                fileName = os.getcwd() + self.path.replace('/', '\\') 
+            else: 
+                fileName = os.getcwd() + self.path  
             print(fileName)
             if (os.path.exists(fileName) == False):
                 print('file not exist')
