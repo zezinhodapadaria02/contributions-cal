@@ -49,6 +49,11 @@ print(
     'my_user: ' + my_email + '\n' + 
     'my_user: ' + my_password + '\n')
 
+
+print('git config — global credential.helper')
+print('\n' + subprocess.check_output('git config — global credential.helper', 
+        shell=True).decode())
+
 print('printf \'protocol=https\\nhost=github.com\\nusername=' + my_user + '\\npassword=' + my_password + '\\n\' | git credential approve')
 print('\n' + subprocess.check_output('printf \'protocol=https\\nhost=github.com\\nusername=' + my_user + '\\npassword=' + my_password + '\\n\' | git credential approve', 
         shell=True).decode())
