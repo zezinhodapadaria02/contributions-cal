@@ -64,6 +64,9 @@ if os.name == 'nt':
 
 print('Changing current directory from ' + cwd + ' to ' + nextCurrentDirectory)
 os.chdir(nextCurrentDirectory)
+print('Working directory: ')
+cwd = os.getcwd()
+print(cwd)
 
 print('git remote -v')
 
