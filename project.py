@@ -7,73 +7,115 @@ import os
 import threading
 from socketserver import ThreadingMixIn
 import os
-import git
 from time import gmtime, strftime
 import subprocess
 
+try:
+    import git
+    if git.__version__ < '0.3.1':
+        raise ImportError("Your version of git is %s. Upgrade to 0.3.1 or better." % git.__version__)
+    have_git = True
+except ImportError as e:
+    have_git = False
+    GIT_MISSING = 'Requires gitpython module, but not installed or incompatible version: %s' % e
+
+
+main_page_content = '''
+<html>  
+  <body>
+    {content}
+  </body>
+</html>
+'''
+
 my_user = 'uninitialized'
 my_password = 'uninitialized'
+
+repository_url = 'https://github.com/flauberjp/MovieTrailerWebsite'
+local_repository_name = repository_url.rsplit('/', 1)[-1]
+file_of_evidences = local_repository_name + '/index2.html'
+
+if (os.path.exists(local_repository_name) == False):
+    args = ['git', 'clone', repository_url]
+    res = subprocess.Popen(args, stdout=subprocess.PIPE)
+    output, _error = res.communicate()
+
+print('Checking existence of \"' + file_of_evidences + '\"...')
+
+if(os.path.exists(file_of_evidences) == False):
+    print('FILE DOES NOT EXIST. Creating...') 
+    with open(file_of_evidences, 'w'): 
+        pass
+else:
+    print('FILE EXIST')
+
+file_of_evidences = '/' +  file_of_evidences
+if os.name == 'nt':
+    file_of_evidences = os.getcwd() + file_of_evidences.replace('/', '\\') 
+else: 
+    file_of_evidences = os.getcwd() + file_of_evidences 
+print('Full path: \"' + file_of_evidences + '\"...')
 
 class ThreadHTTPServer(ThreadingMixIn, http.server.HTTPServer):
     "This is an HTTPServer that supports thread-based concurrency."
 
 class Shortener(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path.endswith('.html'):
-            if os.name == 'nt':
-                fileName = os.getcwd() + self.path.replace('/', '\\') 
-            else: 
-                fileName = os.getcwd() + self.path  
-            print(fileName)
-            if (os.path.exists(fileName) == False):
-                print('file not exist')
+        if 'request' in self.path:
+            if not have_git:
+                print(GIT_MISSING)
             else:
-                print('file exist')
+                repo = git.Repo(local_repository_name) 
+                print("Location "+ repo.working_tree_dir)
+                print("Remote: " + repo.remote("origin").url)
+
+
+                commit_message = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+
+                lastPartOfThePath = self.path.rsplit('/', 1)[-1]
+                if(lastPartOfThePath != 'request'):
+                    commit_message += ' ' + lastPartOfThePath
+
+                with open(file_of_evidences, 'r+') as f:
+                    content = f.read()
+                    f.seek(0, 0)
+                    f.write(commit_message + '<BR>' + content)
+                    f.close()
+
+                index = repo.index
+                index.add([repo.working_tree_dir + '/*'])
+                new_commit = index.commit(commit_message)
+                origin = repo.remotes.origin
+                origin.push()
+
+        fileName = file_of_evidences
+        if (self.path.endswith('.html')):
+            if os.name == 'nt':
+                fileNameTemp = os.getcwd() + self.path.replace('/', '\\') 
+            else: 
+                fileNameTemp = os.getcwd() + self.path  
+            print(fileName)
+            if (os.path.exists(fileNameTemp) == False):
+                print('\"' + fileName + '\" file not exist')
+            else:
+                fileName = fileNameTemp
+                print('\"' + fileName + '\" file exist')
             
-            f = open(fileName, 'rb') #open requested file  
-    
-            #send code 200 response  
-            self.send_response(200)  
-    
-            #send header first  
-            self.send_header('Content-type','text-html')  
-            self.end_headers()  
-    
-            #send file content to client  
-            self.wfile.write(f.read())  
-            f.close()  
-            return  
+        f = open(fileName, 'rb') #open requested file  
 
-        repository_url = 'https://github.com/flauberjp/MovieTrailerWebsite'
-        local_repository_name = repository_url.rsplit('/', 1)[-1]
-        file_of_evidences = local_repository_name + '/index2.html'
+        #send code 200 response  
+        self.send_response(200)  
 
-        if (os.path.exists(local_repository_name) == False):
-            args = ['git', 'clone', repository_url]
-            res = subprocess.Popen(args, stdout=subprocess.PIPE)
-            output, _error = res.communicate()
+        #send header first  
+        self.send_header('Content-type','text-html')  
+        self.end_headers()  
 
-        if(os.path.exists(file_of_evidences) == False):
-            message = 'FILE DOES NOT EXIST' 
-            with open(file_of_evidences, 'w'): 
-                pass
-        else:
-            message = 'FILE EXIST' 
-        print(message) 
-
-        message = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-        with open(file_of_evidences, 'r+') as f:
-                content = f.read()
-                f.seek(0, 0)
-                f.write(message + '<BR>' + content)
-
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
-        known = 'variables: <BR>'
-        known += 'user: ' + my_user + '; pwd: ' + my_password + '<BR>'
-        known += 'git command result: ' + message
-        self.wfile.write(known.encode())
+        #send file content to client
+        textToBeSent = main_page_content.format(content=f.read().decode("utf-8"))
+        #print(textToBeSent)
+        self.wfile.write(textToBeSent.encode())
+        f.close()  
+        return  
 
 
 if __name__ == '__main__':
