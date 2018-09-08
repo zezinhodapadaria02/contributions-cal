@@ -19,6 +19,11 @@ except ImportError as e:
     have_git = False
     GIT_MISSING = 'Requires gitpython module, but not installed or incompatible version: %s' % e
 
+
+print('Working directory: ')
+print(subprocess.check_output('os.getcwd()', 
+        shell=True).decode())
+
 print('git --version')
 print(subprocess.check_output('git --version', 
         shell=True).decode())
