@@ -10,6 +10,19 @@ from os import environ
 from time import gmtime, strftime
 import subprocess
 import askpass
+from sys import argv
+from os import environ
+
+if (len(argv) > 1):
+    print("To work as GIT_ASKPASS?")
+    if (argv[1] == "Username for 'https://github.com': "):
+        print(environ['GIT_USERNAME'])
+        exit()
+
+    if (argv[1] == "Password for 'https://%(GIT_USERNAME)s@github.com': " % environ):
+        print(environ['GIT_PASSWORD'])
+        exit()
+    print("Not this time...")
 
 try:
     import git
@@ -25,7 +38,7 @@ initialWorkingDirectory = os.getcwd()
 print(initialWorkingDirectory)
 
 
-fullPathOf_askpassScript = initialWorkingDirectory + '/askpass.py'
+fullPathOf_askpassScript = initialWorkingDirectory + '/project.py'
 if os.name == 'nt':
     fullPathOf_askpassScript = fullPathOf_askpassScript.replace('/', '\\') 
 
