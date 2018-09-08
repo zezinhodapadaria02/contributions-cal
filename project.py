@@ -26,8 +26,13 @@ print(cwd)
 print('\n' + subprocess.check_output('git --version', 
         shell=True).decode())
 
-print('\n' + subprocess.check_output('export GIT_DISCOVERY_ACROSS_FILESYSTEM=true', 
-        shell=True).decode())
+print('env GIT_DISCOVERY_ACROSS_FILESYSTEM=true')
+subprocess.check_output('env GIT_DISCOVERY_ACROSS_FILESYSTEM=true', 
+    shell=True).decode()
+
+print('export GIT_DISCOVERY_ACROSS_FILESYSTEM')
+subprocess.check_output('export GIT_DISCOVERY_ACROSS_FILESYSTEM', 
+        shell=True).decode()
 
 main_page_content = '''
 <html>  
