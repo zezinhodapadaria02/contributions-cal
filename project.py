@@ -106,7 +106,7 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             self.data_string = self.rfile.read(int(self.headers['Content-Length']))
 
             data = simplejson.loads(self.data_string)
-            self.wfile.write(data)
+            self.wfile.write(str(data).encode())
             ####
             repo = git.Repo(".") 
             print("Location "+ repo.working_tree_dir)
