@@ -11,6 +11,7 @@ from time import gmtime, strftime
 import subprocess
 from sys import argv
 from os import environ
+import simplejson
 
 try:
     import git
@@ -99,6 +100,56 @@ class ThreadHTTPServer(ThreadingMixIn, http.server.HTTPServer):
     "This is an HTTPServer that supports thread-based concurrency."
 
 class Shortener(http.server.BaseHTTPRequestHandler):
+    def do_POST(self):
+        if 'request' in self.path:
+            ###
+            self.data_string = self.rfile.read(int(self.headers['Content-Length']))
+
+            data = simplejson.loads(self.data_string)
+            self.wfile.write(data)
+            ####
+            repo = git.Repo(".") 
+            print("Location "+ repo.working_tree_dir)
+            print("Remote: " + repo.remote("origin").url)
+
+
+            commit_message = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+
+            lastPartOfThePath = self.path.rsplit('/', 1)[-1]
+            if(lastPartOfThePath != 'request'):
+                commit_message += ' ' + lastPartOfThePath
+
+            with open(file_of_evidences_fullPath, 'r+') as f:
+                content = f.read()
+                f.seek(0, 0)
+                f.write(commit_message + '<BR>' + content)
+                f.close()
+
+            index = repo.index
+            index.add([repo.working_tree_dir + '/*'])
+            new_commit = index.commit(commit_message)
+            origin = repo.remotes.origin
+            origin.push()
+
+        fileName = file_of_evidences_fullPath
+            
+        f = open(fileName, 'rb') #open requested file  
+
+        #send code 200 response  
+        self.send_response(200)  
+
+        #send header first  
+        self.send_header('Content-type','text-html')  
+        self.end_headers()  
+
+        #send file content to client
+        textToBeSent = main_page_content.format(content=f.read().decode("utf-8"))
+        #print(textToBeSent)
+        self.wfile.write(textToBeSent.encode())
+        f.close()  
+        return  
+
+
     def do_GET(self):
         if 'request' in self.path:
             if not have_git:
