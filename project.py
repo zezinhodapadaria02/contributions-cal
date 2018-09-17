@@ -12,7 +12,6 @@ import subprocess
 from sys import argv
 from os import environ
 import simplejson
-import json
 
 try:
     import git
@@ -102,15 +101,13 @@ class ThreadHTTPServer(ThreadingMixIn, http.server.HTTPServer):
 
 class Shortener(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
-        data = json.loads(request.data)
+        self.data_string = self.rfile.read(int(self.headers['Content-Length']))
+        data = simplejson.loads(self.data_string)
         print("New commit by: {}".format(data['commits'][0]['author']['name']))
         return "OK"
 
         if 'request' in self.path:
             ###
-            self.data_string = self.rfile.read(int(self.headers['Content-Length']))
-
-            data = simplejson.loads(self.data_string)
             self.wfile.write(str(data).encode())
             ####
             repo = git.Repo(".") 
