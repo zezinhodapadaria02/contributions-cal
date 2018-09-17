@@ -103,6 +103,7 @@ class Shortener(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         self.data_string = self.rfile.read(int(self.headers['Content-Length']))
         data = simplejson.loads(self.data_string)
+        print(str(data).encode())
         print("New commit by: {}".format(data['commits'][0]['author']['name']))
         return "OK"
 
