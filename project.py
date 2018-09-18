@@ -112,21 +112,15 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             summary = "Summary: {}...".format(data['push']['changes'][0]['new']['target']['message'].rstrip()[0:6])
             print(summary)
 
-            return "OK"
-
-            ###
-            self.wfile.write(str(data).encode())
-            ####
             repo = git.Repo(".") 
             print("Location "+ repo.working_tree_dir)
             print("Remote: " + repo.remote("origin").url)
 
+            commit_message = strftime("%Y-%m-%d %H:%M:%S", gmtime()) + ' ' + hash + ' ' + summary
 
-            commit_message = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-
-            lastPartOfThePath = self.path.rsplit('/', 1)[-1]
-            if(lastPartOfThePath != 'request'):
-                commit_message += ' ' + lastPartOfThePath
+            #lastPartOfThePath = self.path.rsplit('/', 1)[-1]
+            #if(lastPartOfThePath != 'request'):
+            #    commit_message += ' ' + lastPartOfThePath
 
             with open(file_of_evidences_fullPath, 'r+') as f:
                 content = f.read()
