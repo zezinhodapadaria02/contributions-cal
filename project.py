@@ -104,12 +104,12 @@ class Shortener(http.server.BaseHTTPRequestHandler):
         if 'request' in self.path:
             self.data_string = self.rfile.read(int(self.headers['Content-Length']))
             data = simplejson.loads(self.data_string)
-            author = "Author: {}".format(data['push']['changes'][0]['new']['target']['author']['user']['username'])
-            print(author)
-            hash = "Hash: {}".format(data['push']['changes'][0]['new']['target']['hash'][0:6]) 
-            print(hash)
-            summary = "Summary: {}...".format(data['push']['changes'][0]['new']['target']['message'].rstrip()[0:6])
-            print(summary)
+            author = data['push']['changes'][0]['new']['target']['author']['user']['username']
+            print("Author: {}".format(author))
+            hash = data['push']['changes'][0]['new']['target']['hash'][0:6] 
+            print("Hash: {}".format(hash))
+            summary = data['push']['changes'][0]['new']['target']['message'].rstrip()[0:6]
+            print("Summary: {}...".format(summary))
 
             print("my_user: \"" + my_user.rstrip() + "\"; author: \"" + author.rstrip() + "\"")
             if ( my_user.rstrip() != author.rstrip()):
