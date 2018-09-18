@@ -108,8 +108,8 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             print("Author: {}".format(author))
             hash = data['push']['changes'][0]['new']['target']['hash'][0:6] 
             print("Hash: {}".format(hash))
-            summary = data['push']['changes'][0]['new']['target']['message'].rstrip()[0:6]
-            print("Summary: {}...".format(summary))
+            summary = data['push']['changes'][0]['new']['target']['message'].rstrip()[0:6] + '...'
+            print("Summary: {}".format(summary))
 
             print("my_user: \"" + my_user.rstrip() + "\"; author: \"" + author.rstrip() + "\"")
             if ( my_user.rstrip() != author.rstrip()):
