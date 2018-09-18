@@ -104,7 +104,9 @@ class Shortener(http.server.BaseHTTPRequestHandler):
         self.data_string = self.rfile.read(int(self.headers['Content-Length']))
         data = simplejson.loads(self.data_string)
         print(str(data).encode())
-        print("New commit by: {}".format(data['push']['changes'][0]['new']['target']['author']['user']['username']))
+        print("Author: {}".format(data['push']['changes'][0]['new']['target']['author']['user']['username']))
+        print("Hash: {}".format(data['push']['changes'][0]['new']['target']['hash'][0:6]))
+        print("Summary: {}...".format(data['push']['changes'][0]['new']['target']['message'].rstrip()[0:6]))
         return "OK"
 
         if 'request' in self.path:
