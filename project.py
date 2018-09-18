@@ -111,9 +111,8 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             summary = "Summary: {}...".format(data['push']['changes'][0]['new']['target']['message'].rstrip()[0:6])
             print(summary)
 
-            print("my_user: " + my_user.rstrip() + "; author: " + author.rstrip())
+            print("my_user: \"" + my_user.rstrip() + "\"; author: \"" + author.rstrip() + "\"")
             if ( my_user.rstrip() != author.rstrip()):
-                
                 print("Disconsidering this change as it was not done by me this time!")
             else:
                 repo = git.Repo(".") 
