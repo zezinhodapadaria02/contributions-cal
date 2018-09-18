@@ -59,9 +59,9 @@ print('printf \'protocol=https\\nhost=github.com\\nusername=' + my_user + '\\npa
 print('\n' + subprocess.check_output('printf \'protocol=https\\nhost=github.com\\nusername=' + my_user + '\\npassword=' + my_password + '\\n\' | git credential approve', 
         shell=True).decode())
 
-repository_url = 'https://github.com/flauberjp/MovieTrailerWebsite'
+repository_url = 'https://github.com/' + my_user + '/contributions-cal'
 local_repository_name = repository_url.rsplit('/', 1)[-1]
-file_of_evidences = 'index2.html'
+file_of_evidences = 'index.html'
 
 if (os.path.exists(local_repository_name) == False):
     print('git clone ' + repository_url)
