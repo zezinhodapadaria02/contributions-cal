@@ -104,7 +104,6 @@ class Shortener(http.server.BaseHTTPRequestHandler):
         if 'request' in self.path:
             self.data_string = self.rfile.read(int(self.headers['Content-Length']))
             data = simplejson.loads(self.data_string)
-            print(str(data).encode())
             author = "Author: {}".format(data['push']['changes'][0]['new']['target']['author']['user']['username'])
             print(author)
             hash = "Hash: {}".format(data['push']['changes'][0]['new']['target']['hash'][0:6]) 
@@ -112,27 +111,30 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             summary = "Summary: {}...".format(data['push']['changes'][0]['new']['target']['message'].rstrip()[0:6])
             print(summary)
 
-            repo = git.Repo(".") 
-            print("Location "+ repo.working_tree_dir)
-            print("Remote: " + repo.remote("origin").url)
+            if ( my_user != author):
+                print("Disconsidering this change as it was not done by me this time!")
+            else:
+                repo = git.Repo(".") 
+                print("Location "+ repo.working_tree_dir)
+                print("Remote: " + repo.remote("origin").url)
 
-            commit_message = strftime("%Y-%m-%d %H:%M:%S", gmtime()) + ' ' + hash + ' ' + summary
+                commit_message = strftime("%Y-%m-%d %H:%M:%S", gmtime()) + ' ' + hash + ' ' + summary
 
-            #lastPartOfThePath = self.path.rsplit('/', 1)[-1]
-            #if(lastPartOfThePath != 'request'):
-            #    commit_message += ' ' + lastPartOfThePath
+                #lastPartOfThePath = self.path.rsplit('/', 1)[-1]
+                #if(lastPartOfThePath != 'request'):
+                #    commit_message += ' ' + lastPartOfThePath
 
-            with open(file_of_evidences_fullPath, 'r+') as f:
-                content = f.read()
-                f.seek(0, 0)
-                f.write(commit_message + '<BR>' + content)
-                f.close()
+                with open(file_of_evidences_fullPath, 'r+') as f:
+                    content = f.read()
+                    f.seek(0, 0)
+                    f.write(commit_message + '<BR>' + content)
+                    f.close()
 
-            index = repo.index
-            index.add([repo.working_tree_dir + '/*'])
-            new_commit = index.commit(commit_message)
-            origin = repo.remotes.origin
-            origin.push()
+                index = repo.index
+                index.add([repo.working_tree_dir + '/*'])
+                new_commit = index.commit(commit_message)
+                origin = repo.remotes.origin
+                origin.push()
 
         fileName = file_of_evidences_fullPath
             
