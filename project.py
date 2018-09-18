@@ -101,15 +101,19 @@ class ThreadHTTPServer(ThreadingMixIn, http.server.HTTPServer):
 
 class Shortener(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
-        self.data_string = self.rfile.read(int(self.headers['Content-Length']))
-        data = simplejson.loads(self.data_string)
-        print(str(data).encode())
-        print("Author: {}".format(data['push']['changes'][0]['new']['target']['author']['user']['username']))
-        print("Hash: {}".format(data['push']['changes'][0]['new']['target']['hash'][0:6]))
-        print("Summary: {}...".format(data['push']['changes'][0]['new']['target']['message'].rstrip()[0:6]))
-        return "OK"
-
         if 'request' in self.path:
+            self.data_string = self.rfile.read(int(self.headers['Content-Length']))
+            data = simplejson.loads(self.data_string)
+            print(str(data).encode())
+            author = "Author: {}".format(data['push']['changes'][0]['new']['target']['author']['user']['username'])
+            print(author)
+            hash = "Hash: {}".format(data['push']['changes'][0]['new']['target']['hash'][0:6]) 
+            print(hash)
+            summary = "Summary: {}...".format(data['push']['changes'][0]['new']['target']['message'].rstrip()[0:6])
+            print(summary)
+
+            return "OK"
+
             ###
             self.wfile.write(str(data).encode())
             ####
