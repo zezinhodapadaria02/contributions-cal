@@ -67,6 +67,13 @@ if (os.path.exists(local_repository_name) == False):
     print('git clone ' + repository_url)
     print(subprocess.check_output('git clone ' + repository_url, 
         shell=True).decode())
+else:
+    print('git fetch ' + repository_url)
+    print(subprocess.check_output('git fetch ' + repository_url, 
+        shell=True).decode())
+    print('git pull ' + repository_url)
+    print(subprocess.check_output('git pull ' + repository_url, 
+        shell=True).decode())
 
 nextCurrentDirectory = initialWorkingDirectory + '/' +  local_repository_name
 if os.name == 'nt':
@@ -119,7 +126,10 @@ class Shortener(http.server.BaseHTTPRequestHandler):
                 print("Location "+ repo.working_tree_dir)
                 print("Remote: " + repo.remote("origin").url)
 
-                commit_message = strftime("%Y-%m-%d %H:%M:%S", gmtime()) + ' ' + hash + ' ' + summary
+                the_date = strftime("%Y-%m-%d", gmtime())
+                the_time = strftime(%H:%M:%S", gmtime())
+
+                commit_message = the_date + ' ' + the_time + ' ' + hash + ' ' + summary
 
                 #lastPartOfThePath = self.path.rsplit('/', 1)[-1]
                 #if(lastPartOfThePath != 'request'):
@@ -130,6 +140,10 @@ class Shortener(http.server.BaseHTTPRequestHandler):
                     f.seek(0, 0)
                     f.write(commit_message + '<BR>' + content)
                     f.close()
+
+                # re-create the content of temp file
+                with open('tempFile', 'w') as tempFile:
+                    tempFile.write(os.urandom(1024))
 
                 index = repo.index
                 index.add([repo.working_tree_dir + '/*'])
