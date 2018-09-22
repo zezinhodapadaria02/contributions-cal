@@ -48,8 +48,8 @@ my_password = os.environ.get('my_password', 'undefined')
 
 print(
     'my_user: ' + my_user + '\n' + 
-    'my_user: ' + my_email + '\n' + 
-    'my_user: ' + my_password + '\n')
+    'my_email: ' + my_email + '\n' + 
+    'my_password: ' + my_password + '\n')
 
 print('git config --global user.name \"' + my_name + '\"')
 print('\n' + subprocess.check_output('git config --global user.name \"' + my_name + '\"', 
