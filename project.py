@@ -63,6 +63,7 @@ repository_url = 'https://github.com/' + my_user + '/contributions-cal'
 local_repository_name = repository_url.rsplit('/', 1)[-1]
 file_of_evidences = 'index.html'
 
+print('To perform git clone or git fetch and git pull...')
 if (os.path.exists(local_repository_name) == False):
     print('git clone ' + repository_url)
     print(subprocess.check_output('git clone ' + repository_url, 
