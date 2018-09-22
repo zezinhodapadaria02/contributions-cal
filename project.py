@@ -143,8 +143,8 @@ class Shortener(http.server.BaseHTTPRequestHandler):
                     f.close()
 
                 # re-create the content of temp file
-                with open('tempFile', 'w') as tempFile:
-                    tempFile.write(os.urandom(1024).decode("utf-8"))
+                with open('tempFile', 'wb') as tempFile:
+                    tempFile.write(os.urandom(1024))
 
                 index = repo.index
                 index.add([repo.working_tree_dir + '/*'])
