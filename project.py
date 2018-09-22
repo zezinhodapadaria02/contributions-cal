@@ -41,6 +41,7 @@ main_page_content = '''
 </html>
 '''
 
+my_name = os.environ.get('my_name', 'undefined')
 my_user = os.environ.get('my_user', 'undefined')
 my_email = os.environ.get('my_email', 'undefined')
 my_password = os.environ.get('my_password', 'undefined')
@@ -49,6 +50,14 @@ print(
     'my_user: ' + my_user + '\n' + 
     'my_user: ' + my_email + '\n' + 
     'my_user: ' + my_password + '\n')
+
+print('git config --global user.name ' + my_name)
+print('\n' + subprocess.check_output('git config --global user.name ' + my_name, 
+        shell=True).decode())
+
+print('git config --global user.email ' + my_email)
+print('\n' + subprocess.check_output('git config --global user.email ' + my_email, 
+        shell=True).decode())
 
 
 print('git config --global credential.helper cache')
