@@ -51,8 +51,8 @@ print(
     'my_user: ' + my_email + '\n' + 
     'my_user: ' + my_password + '\n')
 
-print('git config --global user.name ' + my_name)
-print('\n' + subprocess.check_output('git config --global user.name ' + my_name, 
+print('git config --global user.name \"' + my_name + '\"')
+print('\n' + subprocess.check_output('git config --global user.name \"' + my_name + '\"', 
         shell=True).decode())
 
 print('git config --global user.email ' + my_email)
