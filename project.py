@@ -127,7 +127,7 @@ class Shortener(http.server.BaseHTTPRequestHandler):
                 print("Remote: " + repo.remote("origin").url)
 
                 the_date = strftime("%Y-%m-%d", gmtime())
-                the_time = strftime(%H:%M:%S", gmtime())
+                the_time = strftime("%H:%M:%S", gmtime())
 
                 commit_message = the_date + ' ' + the_time + ' ' + hash + ' ' + summary
 
